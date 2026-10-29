@@ -294,8 +294,8 @@ footer a:hover{color:var(--ink)}
 .xbtn{width:40px;height:40px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);display:grid;place-items:center;flex:none}
 .xbtn:hover{border-color:var(--ink)}
 .xbtn svg{width:16px;height:16px}
-.dlist{overflow:auto;padding:22px 28px 44px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;align-content:start}
-.pc{display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface);padding:0;box-shadow:var(--shadow);transition:border-color .25s,transform .25s}
+.dlist{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;grid-auto-rows:max-content;padding:22px 28px 44px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;align-content:start}
+.pc{flex-shrink:0;display:flex;flex-direction:column;text-align:left;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface);padding:0;box-shadow:var(--shadow);transition:border-color .25s,transform .25s}
 .pc:hover{border-color:var(--blue);transform:translateY(-2px)}
 .pc .im{height:140px;overflow:hidden;background:#fff;border-bottom:1px solid var(--line)}
 .pc .im img{width:100%;height:100%;object-fit:cover;object-position:0 0}
@@ -547,7 +547,7 @@ wheel.addEventListener('wheel',e=>{const d=Math.abs(e.deltaY)>Math.abs(e.deltaX)
   target=clamp(target+acc/stepPx*.35,0,N-1);lastInput=performance.now()},{passive:false});
 let drag=null;
 wheel.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.wheel-ui'))return;drag={x:e.clientX,y:e.clientY,p:target,moved:false,id:e.pointerId}});
-addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y,v=geo.mob?-dx:dy;
+addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y,v=geo.mob?dx:dy;
   if(!drag.moved&&Math.abs(geo.mob?dx:dy)>8){drag.moved=true;wheel.classList.add('drag');try{wheel.setPointerCapture(drag.id)}catch(_){}}
   if(drag.moved){target=clamp(drag.p-v/(geo.mob?150:200),0,N-1);lastInput=performance.now()}});
 addEventListener('pointerup',()=>{if(drag&&drag.moved){wheel.classList.remove('drag');const sup=e=>{e.stopPropagation();e.preventDefault()};wheel.addEventListener('click',sup,{capture:true,once:true});setTimeout(()=>wheel.removeEventListener('click',sup,{capture:true}),50)}drag=null});
